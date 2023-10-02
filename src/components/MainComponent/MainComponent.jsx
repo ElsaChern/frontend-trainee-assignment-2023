@@ -1,5 +1,7 @@
+import GamesList from "../GamesList/GamesList";
+
 const MainComponent = () => {
-  return <div>MainComponent</div>;
+  return <GamesList />;
 };
 
 export default MainComponent;
