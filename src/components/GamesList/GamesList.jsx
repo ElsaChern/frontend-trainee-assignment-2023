@@ -1,5 +1,8 @@
+/* eslint-disable */
+import { useEffect } from "react";
 import styled from "@emotion/styled";
 import { Box, Card } from "@mui/material";
+import fetchGames from "../../api/fetchGames";
 
 const BoxContainer = styled(Box)(({ theme }) => ({
   marginTop: "20px",
@@ -23,7 +26,7 @@ const CardContainer = styled(Card)(({ theme }) => ({
   height: "200px",
   transition: "transform ease .3s",
   "&:hover": {
-    transform: "scale(1.1)",
+    transform: "scale(1.2)",
   },
   [theme.breakpoints.up("sm")]: {
     width: "47.5%",
@@ -37,12 +40,16 @@ const CardContainer = styled(Card)(({ theme }) => ({
 }));
 
 const GamesList = () => {
+  useEffect(() => {
+    const getGames = async () => {
+      const res = await fetchGames();
+      console.log(res);
+    };
+    getGames();
+  });
+
   return (
     <BoxContainer>
-      <CardContainer />
-      <CardContainer />
-      <CardContainer />
-      <CardContainer />
       <CardContainer />
     </BoxContainer>
   );
