@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
   Card,
@@ -19,9 +21,9 @@ import {
   setGamePending,
   setGamesFailure,
   setGamesSuccess,
-  setNextGamesPage,
-  setPrevGamesPage,
+  setPage,
 } from "../../store/slices/gameSlice";
+import loadingIcon from "../../assets/loadingIcon.gif";
 
 const BoxContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -84,15 +86,16 @@ const NextPageBtn = styled(Button)({
   borderRadius: "10px",
 });
 
-const GamesList = () => {
-  const { games, error, isLoading, startIndex, finiteIndex } = useSelector(
-    (state) => state.games,
-  );
-  const [page, setPage] = useState(1);
-  const count = Math.ceil(games.length / 15);
+const LoadingWrapper = styled(Box)({
+  display: "flex",
+  justifyContent: "center",
+  padding: "50px",
+});
 
-  console.log(games);
-  console.log(count);
+const GamesList = () => {
+  const { onePageGames, error, isLoading, startIndex, page, lastPage } =
+    useSelector((state) => state.games);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -110,30 +113,41 @@ const GamesList = () => {
 
   const nextPageHandle = () => {
     window.scrollTo(0, 0);
-    setPage((prev) => prev + 1);
-    dispatch(setNextGamesPage());
-    const getGames = async () => {
-      const gamesResult = await fetchGames();
-      dispatch(setGamesSuccess(gamesResult));
-    };
-    getGames();
+    dispatch(setPage(page + 1));
   };
 
   const prevPageHandle = () => {
     window.scrollTo(0, 0);
-    setPage((prev) => prev - 1);
-    dispatch(setPrevGamesPage());
-    const getGames = async () => {
-      const gamesResult = await fetchGames();
-      dispatch(setGamesSuccess(gamesResult));
-    };
-    getGames();
+    dispatch(setPage(page - 1));
   };
+
+  const changePageHandle = (event, page) => {
+    event.currentTarget;
+    window.scrollTo(0, 0);
+    dispatch(setPage(page));
+  };
+
+  if (error) {
+    return (
+      <Alert severity="error" variant="outlined">
+        <AlertTitle>Ошибка</AlertTitle>
+        Что-то пошло не так. Пожалуйста, попробуйте еще раз позднее
+      </Alert>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <LoadingWrapper>
+        <img src={loadingIcon} />
+      </LoadingWrapper>
+    );
+  }
 
   return (
     <>
       <BoxContainer>
-        {games.map((game) => {
+        {onePageGames.map((game) => {
           return (
             <CardContainer key={game.id}>
               <Link href={`/game/${game.id}`} underline="none">
@@ -149,7 +163,11 @@ const GamesList = () => {
                   </Typography>
                   <CardGenre>{game.genre}</CardGenre>
                   <ExtraInfoWrapper>
-                    <CardExtraInfo>{game.developer}</CardExtraInfo>
+                    <CardExtraInfo>
+                      {game.developer.length > 30
+                        ? `${game.developer.slice(0, 30)}...`
+                        : game.developer}
+                    </CardExtraInfo>
                     <CardExtraInfo>{game.release_date}</CardExtraInfo>
                   </ExtraInfoWrapper>
                 </CardContent>
@@ -170,10 +188,15 @@ const GamesList = () => {
           page={page}
           hideNextButton={true}
           hidePrevButton={true}
-          count={count}
+          count={lastPage}
           shape="rounded"
+          onChange={(event, page) => changePageHandle(event, page)}
         />
-        <NextPageBtn endIcon={<NavigateNextIcon />} onClick={nextPageHandle}>
+        <NextPageBtn
+          endIcon={<NavigateNextIcon />}
+          onClick={nextPageHandle}
+          disabled={page === lastPage}
+        >
           Вперед
         </NextPageBtn>
       </NavigateWrapper>
