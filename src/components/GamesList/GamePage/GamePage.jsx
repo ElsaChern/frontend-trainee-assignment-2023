@@ -1,10 +1,11 @@
 /* eslint-disable */
 
 import styled from "@emotion/styled";
-import { Box, Card, CardMedia, Slider, Typography } from "@mui/material";
+import { Box, Card, CardMedia, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import fetchGameID from "../../../api/fetchGameID";
 import { useEffect, useState } from "react";
+import Slider from "../../../helpers/UI/Slider/Slider";
 
 const BoxContainer = styled(Card)(({ theme }) => ({
   display: "flex",
@@ -75,16 +76,7 @@ const GamePage = () => {
       setGame(gameResult);
     };
     getGame();
-  }, [id]);
-
-  const title = game.title;
-  const release = game.release_date;
-  const publisher = game.publisher;
-  const developer = game.developer;
-  const genre = game.genre;
-  const thumbnail = game.thumbnail;
-  const screenshots = game.screenshots;
-  const systemReq = game.minimum_system_requirements;
+  }, []);
 
   return (
     <>
@@ -93,25 +85,25 @@ const GamePage = () => {
           <CardMedia
             sx={{ width: "100%", borderRadius: "10px" }}
             component="img"
-            image={thumbnail}
+            image={game.thumbnail}
           />
           <ExtraGameInformation>
-            <Typography variant="h6">{`Издательство: ${publisher}`}</Typography>
-            <Typography variant="body1">{`Разработчик: ${developer}`}</Typography>
-            <Typography variant="body1">{`Дата релиза: ${release}`}</Typography>
+            <Typography variant="h6">{`Издательство: ${game.publisher}`}</Typography>
+            <Typography variant="body1">{`Разработчик: ${game.developer}`}</Typography>
+            <Typography variant="body1">{`Дата релиза: ${game.release}`}</Typography>
           </ExtraGameInformation>
         </ExtraGameWrapper>
         <MainGameInformation>
           <Typography color="text.secondary" variant="h4">
-            {title}
+            {game.title}
           </Typography>
-          <GenreText variant="h6">{genre}</GenreText>
+          <GenreText variant="h6">{game.genre}</GenreText>
           <SysytemReqTitle component="h2">
             Минимальные системные требования:
           </SysytemReqTitle>
           <Box>
-            {systemReq ? (
-              Object.entries(systemReq).map(([key, value]) => (
+            {game.systemReq ? (
+              Object.entries(game.systemReq).map(([key, value]) => (
                 <Box key={key}>
                   <Typography color="text.primary" variant="subtitle1">
                     {systamMap[key]}
@@ -130,6 +122,7 @@ const GamePage = () => {
         </MainGameInformation>
       </BoxContainer>
       <SysytemReqTitle component="h2">Скриншоты:</SysytemReqTitle>
+      <Slider screenshots={game.screenshots} />
     </>
   );
 };

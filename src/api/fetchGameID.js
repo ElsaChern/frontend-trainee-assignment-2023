@@ -7,8 +7,22 @@ const fetchGameID = async (id) => {
     id,
   };
 
-  const gamesResponse = await apiInstance.get(searchUrl, { params });
-  return gamesResponse.data;
+  const response = await apiInstance.get(searchUrl, { params });
+  // return response.data;
+  const result = response?.data || {};
+
+  const mappedGameInfo = {
+    id: result.id,
+    title: result.title,
+    thumbnail: result.thumbnail,
+    genre: result.genre,
+    publisher: result.publisher,
+    developer: result.developer,
+    release: result.release_date,
+    systemReq: result.minimum_system_requirements,
+    screenshots: result.screenshots,
+  };
+  return mappedGameInfo;
 };
 
 export default fetchGameID;
