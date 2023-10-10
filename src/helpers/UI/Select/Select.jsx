@@ -1,4 +1,3 @@
-/* eslint-disable */
 import styled from "@emotion/styled";
 import {
   Box,
@@ -6,6 +5,7 @@ import {
   Typography,
   Select as MuiSelect,
   MenuItem,
+  InputLabel,
 } from "@mui/material";
 
 const SelectWrapper = styled(Box)(() => ({
@@ -14,40 +14,44 @@ const SelectWrapper = styled(Box)(() => ({
 
 const FormControlStyle = styled(FormControl)({
   width: "100%",
+  padding: "10px 0",
 });
 
-const FormLabel = styled(Typography)({
-  fontSize: "12px",
-  marginLeft: "10px",
+const FormLabel = styled(InputLabel)({
+  fontSize: "14px",
+  padding: "5px",
 });
 
 const FormSelect = styled(MuiSelect)({
   borderRadius: "10px",
   height: "40px",
   padding: "0px",
+  margin: "0 10px",
 });
 
-const Select = ({ label }) => {
+const Select = ({ label, name, optoinsArray, value, onChange }) => {
   return (
     <SelectWrapper>
       <FormControlStyle>
         <FormLabel>{label}</FormLabel>
         <FormSelect
-          placeholder={label}
-          MenuProps={{ style: { maxHeight: 400 } }}
-          displayEmpty={true}
-          //   renderValue={(value) => (
-          //     // <Typography>
-          //     //   {array.find((item) => item.value === value)?.label ||
-          //     //     array[0].label}
-          //     // </Typography>
-          //   )}
+          MenuProps={{ style: { maxHeight: 300 } }}
+          displayEmpty={false}
+          name={name}
+          value={value}
+          onChange={onChange}
+          renderValue={() => (
+            <Typography>
+              {optoinsArray.find((item) => item.value === value)?.label ||
+                optoinsArray[0].label}
+            </Typography>
+          )}
         >
-          {/* {array.map((item) => (
+          {optoinsArray.map((item) => (
             <MenuItem key={item.value} value={item.value}>
               {item.label}
             </MenuItem>
-          ))} */}
+          ))}
         </FormSelect>
       </FormControlStyle>
     </SelectWrapper>
