@@ -8,7 +8,6 @@ const fetchGameID = async (id) => {
   };
 
   const response = await apiInstance.get(searchUrl, { params });
-  // return response.data;
   const result = response?.data || {};
 
   const mappedGameInfo = {

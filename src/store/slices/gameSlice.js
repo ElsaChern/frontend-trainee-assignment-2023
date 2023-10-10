@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
 
 const amountPerPage = 15;
@@ -11,7 +10,7 @@ const gameSlice = createSlice({
     isLoading: false,
     startIndex: 0,
     onePageGames: [],
-    page: 1,
+    currentPage: 1,
     lastPage: 0,
   },
 
@@ -35,8 +34,8 @@ const gameSlice = createSlice({
     },
 
     setPage(state, action) {
-      state.page = action.payload;
-      state.startIndex = (state.page - 1) * amountPerPage;
+      state.currentPage = action.payload;
+      state.startIndex = (state.currentPage - 1) * amountPerPage;
       state.onePageGames = state.games.slice(
         state.startIndex,
         state.startIndex + amountPerPage,
