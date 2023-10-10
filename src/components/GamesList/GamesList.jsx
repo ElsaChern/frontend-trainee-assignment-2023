@@ -29,6 +29,7 @@ import {
   setPage,
 } from "../../store/slices/gameSlice";
 import loadingIcon from "../../assets/loadingIcon.gif";
+import formattedData from "../../helpers/dataFormat";
 
 const GamesList = () => {
   const dispatch = useDispatch();
@@ -105,7 +106,9 @@ const GamesList = () => {
                         ? `${game.developer.slice(0, 30)}...`
                         : game.developer}
                     </CardExtraInfo>
-                    <CardExtraInfo>{game.release_date}</CardExtraInfo>
+                    <CardExtraInfo>
+                      {formattedData(game.release_date)}
+                    </CardExtraInfo>
                   </ExtraInfoWrapper>
                 </CardContent>
               </Link>
