@@ -1,12 +1,10 @@
-/* eslint-disable */
-import { useEffect, useState } from "react";
-import styled from "@emotion/styled";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import {
   Alert,
   AlertTitle,
-  Box,
-  Button,
-  Card,
   CardContent,
   CardMedia,
   Link,
@@ -14,9 +12,16 @@ import {
   Typography,
 } from "@mui/material";
 import fetchGames from "../../api/fetchGames";
-import { useDispatch, useSelector } from "react-redux";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import {
+  BoxContainer,
+  CardContainer,
+  CardExtraInfo,
+  CardGenre,
+  ExtraInfoWrapper,
+  LoadingWrapper,
+  NavigateWrapper,
+  NextPageBtn,
+} from "./styled";
 import {
   setGamePending,
   setGamesFailure,
@@ -24,84 +29,13 @@ import {
   setPage,
 } from "../../store/slices/gameSlice";
 import loadingIcon from "../../assets/loadingIcon.gif";
-import { clearSearchData } from "../../store/slices/searchSlice";
-
-const BoxContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
-  paddingBottom: "20px",
-  flexWrap: "wrap",
-  alignContent: "center",
-  alignItems: "start",
-  justifyContent: "space-evenly",
-  gap: "15px",
-  [theme.breakpoints.up("xs")]: {
-    flexDirection: "column",
-  },
-  [theme.breakpoints.up("md")]: {
-    flexDirection: "row",
-  },
-}));
-
-const CardContainer = styled(Card)({
-  display: "flex",
-  flexDirection: "column",
-  borderRadius: "10px",
-  transition: "transform ease .4s",
-  "&:hover": {
-    transform: "scale(1.1)",
-  },
-});
-
-const CardGenre = styled(Typography)({
-  color: "text.secondary",
-});
-
-const ExtraInfoWrapper = styled(Box)({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  backgroundColor: "white",
-  opacity: "0.2",
-  borderRadius: "10px",
-  marginTop: "10px",
-});
-
-const CardExtraInfo = styled(Typography)({
-  color: "black",
-  padding: "10px",
-});
-
-const NavigateWrapper = styled(Box)({
-  display: "flex",
-  padding: "20px",
-  gap: "110px",
-  justifyContent: "center",
-});
-
-const NextPageBtn = styled(Button)({
-  width: "150px",
-  padding: "10px 25px",
-  backgroundColor: "inherit",
-  color: "white",
-  border: "1px solid #474747",
-  borderRadius: "10px",
-});
-
-const LoadingWrapper = styled(Box)({
-  display: "flex",
-  justifyContent: "center",
-  padding: "50px",
-});
 
 const GamesList = () => {
   const dispatch = useDispatch();
-  const { onePageGames, error, isLoading, startIndex, page, lastPage } =
+
+  const { onePageGames, error, isLoading, startIndex, currentPage, lastPage } =
     useSelector((state) => state.games);
   const { platform, category, order } = useSelector((state) => state.search);
-
-  console.log(platform);
-  console.log(category);
-  console.log(order);
 
   useEffect(() => {
     const getGames = async () => {
@@ -118,17 +52,15 @@ const GamesList = () => {
 
   const nextPageHandle = () => {
     window.scrollTo(0, 0);
-    dispatch(setPage(page + 1));
+    dispatch(setPage(currentPage + 1));
   };
 
   const prevPageHandle = () => {
     window.scrollTo(0, 0);
-    dispatch(setPage(page - 1));
+    dispatch(setPage(currentPage - 1));
   };
 
   const changePageHandle = (event, page) => {
-    event.currentTarget;
-    window.scrollTo(0, 0);
     dispatch(setPage(page));
   };
 
@@ -144,7 +76,7 @@ const GamesList = () => {
   if (isLoading) {
     return (
       <LoadingWrapper>
-        <img src={loadingIcon} />
+        <img src={loadingIcon} alt="Загрузка..." />
       </LoadingWrapper>
     );
   }
@@ -190,9 +122,9 @@ const GamesList = () => {
           Назад
         </NextPageBtn>
         <Pagination
-          page={page}
-          hideNextButton={true}
-          hidePrevButton={true}
+          page={currentPage}
+          hideNextButton
+          hidePrevButton
           count={lastPage}
           shape="rounded"
           onChange={(event, page) => changePageHandle(event, page)}
@@ -200,7 +132,7 @@ const GamesList = () => {
         <NextPageBtn
           endIcon={<NavigateNextIcon />}
           onClick={nextPageHandle}
-          disabled={page === lastPage}
+          disabled={currentPage === lastPage}
         >
           Вперед
         </NextPageBtn>

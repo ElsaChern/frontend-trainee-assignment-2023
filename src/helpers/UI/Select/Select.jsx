@@ -1,33 +1,10 @@
-import styled from "@emotion/styled";
+import { MenuItem, Typography } from "@mui/material";
 import {
-  Box,
-  FormControl,
-  Typography,
-  Select as MuiSelect,
-  MenuItem,
-  InputLabel,
-} from "@mui/material";
-
-const SelectWrapper = styled(Box)(() => ({
-  width: "100%",
-}));
-
-const FormControlStyle = styled(FormControl)({
-  width: "100%",
-  padding: "10px 0",
-});
-
-const FormLabel = styled(InputLabel)({
-  fontSize: "14px",
-  padding: "5px",
-});
-
-const FormSelect = styled(MuiSelect)({
-  borderRadius: "10px",
-  height: "40px",
-  padding: "0px",
-  margin: "0 10px",
-});
+  FormControlStyle,
+  FormLabel,
+  FormSelect,
+  SelectWrapper,
+} from "./styled";
 
 const Select = ({ label, name, optoinsArray, value, onChange }) => {
   return (

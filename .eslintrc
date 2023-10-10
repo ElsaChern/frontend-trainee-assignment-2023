@@ -12,6 +12,7 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
+    "no-param-reassign": ["error", { "props": false }],
     "prettier/prettier": "off",
     "react/react-in-jsx-scope": "off",
     "react/function-component-definition": [

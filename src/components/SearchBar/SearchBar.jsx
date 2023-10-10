@@ -1,28 +1,18 @@
-/* eslint-disable */
-
-import styled from "@emotion/styled";
-import { Button } from "@mui/material";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   categoryOptions,
   platformOptions,
   sortByOptions,
-} from "../../helpers/constants";
+} from "../../helpers/optionsConstants";
 import Select from "../../helpers/UI/Select/Select";
-import { useDispatch } from "react-redux";
 import { setSearchData } from "../../store/slices/searchSlice";
-
-const SubmitBtn = styled(Button)({
-  border: "1px solid #474747",
-  borderRadius: "10px",
-  width: "70px",
-  color: "white",
-  padding: "8px",
-});
+import SubmitBtn from "./styled";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
+
   const [values, setValues] = useState({
     platform: "",
     category: "",
