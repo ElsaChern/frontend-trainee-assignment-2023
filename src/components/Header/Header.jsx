@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Card } from "@mui/material";
-import GameSelector from "../GameSelector/GameSelector";
+import SearchBar from "../SearchBar/SearchBar";
 
 const Header = () => {
   const HeaderContainer = styled(Card)({
@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      <GameSelector />
+      <SearchBar />
     </HeaderContainer>
   );
 };

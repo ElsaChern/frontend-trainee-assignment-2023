@@ -24,6 +24,7 @@ import {
   setPage,
 } from "../../store/slices/gameSlice";
 import loadingIcon from "../../assets/loadingIcon.gif";
+import { clearSearchData } from "../../store/slices/searchSlice";
 
 const BoxContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -93,23 +94,27 @@ const LoadingWrapper = styled(Box)({
 });
 
 const GamesList = () => {
+  const dispatch = useDispatch();
   const { onePageGames, error, isLoading, startIndex, page, lastPage } =
     useSelector((state) => state.games);
+  const { platform, category, order } = useSelector((state) => state.search);
 
-  const dispatch = useDispatch();
+  console.log(platform);
+  console.log(category);
+  console.log(order);
 
   useEffect(() => {
     const getGames = async () => {
       dispatch(setGamePending());
       try {
-        const gamesResult = await fetchGames();
+        const gamesResult = await fetchGames(platform, category, order);
         dispatch(setGamesSuccess(gamesResult));
       } catch (e) {
         dispatch(setGamesFailure());
       }
     };
     getGames();
-  }, []);
+  }, [platform, category, order]);
 
   const nextPageHandle = () => {
     window.scrollTo(0, 0);
