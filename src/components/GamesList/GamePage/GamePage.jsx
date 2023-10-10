@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { CardMedia, Typography, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -11,6 +13,7 @@ import {
   MainGameInformation,
   SysytemReqTitle,
 } from "./styled";
+import formattedData from "../../../helpers/dataFormat";
 
 const systamMap = {
   os: "Операционая система:",
@@ -32,6 +35,8 @@ const GamePage = () => {
     getGame();
   }, []);
 
+  const releaseData = formattedData(game.release);
+
   return (
     <>
       <BoxContainer>
@@ -44,7 +49,8 @@ const GamePage = () => {
           <ExtraGameInformation>
             <Typography variant="h6">{`Издательство: ${game.publisher}`}</Typography>
             <Typography variant="body1">{`Разработчик: ${game.developer}`}</Typography>
-            <Typography variant="body1">{`Дата релиза: ${game.release}`}</Typography>
+            <Typography variant="body1">{`Дата релиза: 
+            ${releaseData}`}</Typography>
           </ExtraGameInformation>
         </ExtraGameWrapper>
         <MainGameInformation>
