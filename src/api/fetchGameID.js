@@ -1,6 +1,6 @@
 import apiInstance from "./apiInstance";
 
-const searchUrl = "/game?id";
+const searchUrl = "/game";
 
 const fetchGameID = async (id) => {
   const params = {
