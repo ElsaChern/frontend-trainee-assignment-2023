@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
 import HeaderContainer from "./slyled";
@@ -13,10 +12,7 @@ const Header = () => {
       {pathname === "/games" ? (
         <SearchBar />
       ) : (
-        <ButtonComponent
-          onClick={() => navigate("/games")}
-          text="На главную"
-        ></ButtonComponent>
+        <ButtonComponent onClick={() => navigate("/games")} text="На главную" />
       )}
     </HeaderContainer>
   );
