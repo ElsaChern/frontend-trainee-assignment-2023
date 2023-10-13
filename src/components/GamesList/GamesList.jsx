@@ -62,6 +62,7 @@ const GamesList = () => {
   };
 
   const changePageHandle = (event, page) => {
+    window.scrollTo(0, 0);
     dispatch(setPage(page));
   };
 

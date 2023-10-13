@@ -14,13 +14,16 @@ const BoxContainer = styled(Card)(({ theme }) => ({
   },
 }));
 
-const MainGameInformation = styled(Box)({
+const MainGameInformation = styled(Box)(({ theme }) => ({
   width: "60%",
   display: "flex",
   justifyContent: "flex-start",
   flexDirection: "column",
   alignItems: "baseline",
-});
+  [theme.breakpoints.down("md")]: {
+    width: "100%",
+  },
+}));
 
 const GenreText = styled(Typography)({
   backgroundColor: "white",
@@ -32,11 +35,14 @@ const GenreText = styled(Typography)({
   fontSize: "12px",
 });
 
-const SysytemReqTitle = styled(Typography)({
+const SysytemReqTitle = styled(Typography)(({ theme }) => ({
   fontSize: "23px",
   marginTop: "15px",
   borderBottom: "solid 1px rgba(236, 236, 236, 0.1)",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "18px",
+  },
+}));
 
 const ExtraGameWrapper = styled(Box)({
   display: "flex",
@@ -45,12 +51,16 @@ const ExtraGameWrapper = styled(Box)({
   justifyContent: "space-between",
 });
 
-const ExtraGameInformation = styled(Box)({
+const ExtraGameInformation = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   opacity: "0.2",
   borderRadius: "10px",
-});
+  [theme.breakpoints.down("md")]: {
+    marginTop: "15px",
+    alignItems: "flex-end",
+  },
+}));
 
 export {
   BoxContainer,
