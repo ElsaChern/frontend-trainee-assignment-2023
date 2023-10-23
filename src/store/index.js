@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import gameSlice from "./slices/gameSlice";
 import searchSlice from "./slices/searchSlice";
+import gameListSlice from "./slices/gameListSlice";
+import gameSlice from "./slices/gameSlice";
 
 export default configureStore({
   reducer: {
-    games: gameSlice,
+    games: gameListSlice,
+    game: gameSlice,
     search: searchSlice,
   },
 });

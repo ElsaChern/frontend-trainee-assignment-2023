@@ -1,8 +1,12 @@
-import { CardMedia, Typography, Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { CardMedia, Typography, Box, Alert, AlertTitle } from "@mui/material";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import fetchGameID from "../../../api/fetchGameID";
 import Slider from "../../../helpers/UI/Slider/Slider";
+import loadingIcon from "../../../assets/loadingIcon.gif";
+import formattedData from "../../../helpers/dataFormat";
+import { LoadingWrapper } from "../styled";
 import {
   BoxContainer,
   ExtraGameInformation,
@@ -11,7 +15,11 @@ import {
   MainGameInformation,
   SysytemReqTitle,
 } from "./styled";
-import formattedData from "../../../helpers/dataFormat";
+import {
+  setGamePending,
+  setGameFailure,
+  setGameSuccess,
+} from "../../../store/slices/gameSlice";
 
 const systamMap = {
   os: "Операционая система:",
@@ -22,16 +30,39 @@ const systamMap = {
 };
 
 const GamePage = () => {
+  const { game, error, isLoading } = useSelector((state) => state.game);
+  const dispatch = useDispatch();
   const { id } = useParams();
-  const [game, setGame] = useState({});
 
   useEffect(() => {
     const getGame = async () => {
-      const gameResult = await fetchGameID(id);
-      setGame(gameResult);
+      dispatch(setGamePending());
+      try {
+        const gameResult = await fetchGameID(id);
+        dispatch(setGameSuccess(gameResult));
+      } catch {
+        dispatch(setGameFailure());
+      }
     };
     getGame();
-  }, []);
+  }, [id]);
+
+  if (error) {
+    return (
+      <Alert severity="error" variant="outlined">
+        <AlertTitle>Ошибка</AlertTitle>
+        Что-то пошло не так. Пожалуйста, попробуйте еще раз позднее
+      </Alert>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <LoadingWrapper>
+        <img src={loadingIcon} alt="Загрузка..." />
+      </LoadingWrapper>
+    );
+  }
 
   const releaseData = formattedData(game.release);
 

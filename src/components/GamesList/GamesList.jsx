@@ -27,7 +27,7 @@ import {
   setGamesFailure,
   setGamesSuccess,
   setPage,
-} from "../../store/slices/gameSlice";
+} from "../../store/slices/gameListSlice";
 import loadingIcon from "../../assets/loadingIcon.gif";
 import formattedData from "../../helpers/dataFormat";
 
