@@ -3,9 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const gameSlice = createSlice({
   name: "game",
   initialState: {
-    game: {},
+    game: localStorage.getItem("game")
+      ? JSON.parse(localStorage.getItem("game"))
+      : {},
     error: false,
     isLoading: false,
+    lastRequestTime: localStorage.getItem("time")
+      ? JSON.parse(localStorage.getItem("time"))
+      : 0,
   },
 
   reducers: {
@@ -14,7 +19,10 @@ const gameSlice = createSlice({
     },
     setGameSuccess(state, action) {
       state.isLoading = false;
-      state.game = action.payload;
+      state.game = action.payload.game;
+      state.lastRequestTime = action.payload.time;
+      localStorage.setItem("game", JSON.stringify(state.game));
+      localStorage.setItem("time", JSON.stringify(state.lastRequestTime));
     },
     setGameFailure(state) {
       state.isLoading = false;
@@ -23,6 +31,6 @@ const gameSlice = createSlice({
   },
 });
 
-export const { setGamePending, setGameSuccess, setGameFailure } =
+export const { setGamePending, setGameSuccess, setCashedTime, setGameFailure } =
   gameSlice.actions;
 export default gameSlice.reducer;
