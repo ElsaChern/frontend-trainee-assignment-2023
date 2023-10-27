@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { CardMedia, Typography, Box, Alert, AlertTitle } from "@mui/material";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -19,6 +20,8 @@ import {
   setGamePending,
   setGameFailure,
   setGameSuccess,
+  deleteCashedGame,
+  setCashedTime,
 } from "../../../store/slices/gameSlice";
 
 const systamMap = {
@@ -30,22 +33,36 @@ const systamMap = {
 };
 
 const GamePage = () => {
-  const { game, error, isLoading } = useSelector((state) => state.game);
+  const { game, error, isLoading, lastRequestTime } = useSelector(
+    (state) => state.game,
+  );
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  const cashedTime = 5 * 60 * 1000;
+
   useEffect(() => {
     const getGame = async () => {
-      dispatch(setGamePending());
       try {
-        const gameResult = await fetchGameID(id);
-        dispatch(setGameSuccess(gameResult));
+        if (Object.keys(game).length === 0) {
+          dispatch(setGamePending());
+          const gameResult = await fetchGameID(id);
+          dispatch(setGameSuccess({ game: gameResult, time: Date.now() }));
+        } else {
+          console.log(+game.id);
+          console.log(+id);
+          if (+game.id !== +id || Date.now() - lastRequestTime > cashedTime) {
+            dispatch(setGamePending());
+            const gameResult = await fetchGameID(id);
+            dispatch(setGameSuccess({ game: gameResult, time: Date.now() }));
+          }
+        }
       } catch {
         dispatch(setGameFailure());
       }
     };
     getGame();
-  }, [id]);
+  }, []);
 
   if (error) {
     return (
@@ -98,7 +115,7 @@ const GamePage = () => {
                     {systamMap[key]}
                   </Typography>
                   <Typography variant="subtitle1" color="text.secondary">
-                    {value.length > 2 ? value : "Данные не найдены"}
+                    {value?.length > 2 ? value : "Данные не найдены"}
                   </Typography>
                 </Box>
               ))

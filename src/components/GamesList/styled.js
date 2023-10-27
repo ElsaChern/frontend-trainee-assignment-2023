@@ -35,7 +35,7 @@ const CardContainer = styled(Card)(({ theme }) => ({
 }));
 
 const CardGenre = styled(Typography)({
-  color: "text.secondary",
+  color: "#599dcf",
 });
 
 const ExtraInfoWrapper = styled(Box)({

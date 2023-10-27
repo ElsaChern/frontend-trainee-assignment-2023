@@ -2,12 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import { Link } from "react-router-dom";
 import {
   Alert,
   AlertTitle,
   CardContent,
   CardMedia,
-  Link,
   Pagination,
   Typography,
 } from "@mui/material";
@@ -89,7 +89,7 @@ const GamesList = () => {
         {onePageGames.map((game) => {
           return (
             <CardContainer key={game.id}>
-              <Link href={`/game/${game.id}`} underline="none">
+              <Link to={`/games/${game.id}`}>
                 <CardMedia
                   component="img"
                   alt="game image"
@@ -97,14 +97,14 @@ const GamesList = () => {
                   image={game.thumbnail}
                 />
                 <CardContent>
-                  <Typography color="text.secondary" variant="h5">
+                  <Typography color="text.secondary" variant="h6">
                     {game.title}
                   </Typography>
                   <CardGenre>{game.genre}</CardGenre>
                   <ExtraInfoWrapper>
                     <CardExtraInfo>
                       {game.developer.length > 30
-                        ? `${game.developer.slice(0, 30)}...`
+                        ? `${game.developer.slice(0, 20)}...`
                         : game.developer}
                     </CardExtraInfo>
                     <CardExtraInfo>
